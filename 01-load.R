@@ -1,7 +1,6 @@
 library(tidyverse)
 library(haven)
 library(sjmisc)
-library(binoculaR)
 
 Sys.setenv(LANGUAGE = "en")
 
