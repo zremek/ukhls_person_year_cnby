@@ -16,15 +16,9 @@ longfile <- longfile %>%
   filter(pidp %in% birthy_consistent_id) %>% # filter off inconsistent
   filter(between(x = doby_dv, left = 1983, right = 1998)) # only born from 83 to 98
 
-# TODO rewrite for this data
-# tiy_2023 %>% 
-#   filter(istrtdaty > 0) %>%
-#   group_by(pidp) %>% 
-#   count(istrtdaty) %>% 
-#   filter(n > 1) %>% 
-#   arrange(-n)
 
 
-# FSTWAVE First wave R participated - survey year #### 
+
+# TODO FSTWAVE First wave R participated - survey year #### 
 
 
