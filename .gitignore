@@ -2,4 +2,6 @@
 .Rhistory
 *.RData
 *.Rmd
+*.dta
+*.sav
 .Ruserdata
