@@ -22,7 +22,15 @@ ukhls_variables_to_select <- c(
   "ndepchl_dv",
   "intdaty_dv",
   "intdatm_dv",
-  "intdatd_dv"
+  "intdatd_dv", 
+  "paygu_dv",
+  "seearngrs_dv",
+  "paynu_dv",
+  "seearnnet_dv",
+  "paygu_if",
+  "paynu_if",
+  "seearngrs_if"
+
 )
 
 # nsssec_to_select <- # it's separated to remind that I add it doing 04-make-wide
