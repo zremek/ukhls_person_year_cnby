@@ -1,6 +1,7 @@
 library(tidyverse)
 library(haven)
 library(sjmisc)
+library(sjlabelled)
 
 # age filter #### 
 
@@ -44,5 +45,41 @@ longfile <-
          Nxtwave_Day = lead(intdatd_dv))
 
 
+# gross usual pay paygu_dv, self-employment pay seearngrs_dv
+# JOB01_IncomeGrs
+# [Job 01] Monthly earnings, gross
+# at the end of the spell (current earnings for censored spells); in UKHLS for current job at the time of interview
+# paynu_dv, seearnnet_dv
+# JOB01_IncomeNet
+# [Job 01] Monthly earnings, net
 
 
+
+
+
+# clean income data from special missing categories from -9 to -1 #### 
+
+longfile <- 
+  longfile %>% 
+  mutate(seearngrs_dv_na = sjlabelled::set_na(seearngrs_dv, na = -9:-1,
+                                              drop.levels = TRUE), 
+         paygu_dv_na = sjlabelled::set_na(paygu_dv, na = -9:-1,
+                                          drop.levels = TRUE),
+         seearnnet_dv_na = sjlabelled::set_na(seearnnet_dv, na = -9:-1,
+                                              drop.levels = TRUE), 
+         paynu_dv_na = sjlabelled::set_na(paynu_dv, na = -9:-1,
+                                          drop.levels = TRUE))
+
+# labelled::drop_unused_value_labels for all variables
+
+longfile <- longfile %>% labelled::drop_unused_value_labels()
+
+# create 
+
+longfile <- longfile %>% 
+    mutate(JOB01_IncomeGrs = if_else(!is.na(seearngrs_dv_na), 
+                              true = seearngrs_dv_na, 
+                              false = paygu_dv_na),
+           JOB01_IncomeNet = if_else(!is.na(seearnnet_dv_na), 
+                              true = seearnnet_dv_na, 
+                              false = paynu_dv_na))
