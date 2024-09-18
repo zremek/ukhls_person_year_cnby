@@ -29,8 +29,8 @@ ukhls_variables_to_select <- c(
   "seearnnet_dv",
   "paygu_if",
   "paynu_if",
-  "seearngrs_if"
-# TODO add fimnlabgrs_dv
+  "seearngrs_if",
+  "fimnlabgrs_dv"
 )
 
 # nsssec_to_select <- # it's separated to remind that I add it doing 04-make-wide

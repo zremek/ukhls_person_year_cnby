@@ -83,3 +83,5 @@ longfile <- longfile %>%
            JOB01_IncomeNet = if_else(!is.na(seearnnet_dv_na), 
                               true = seearnnet_dv_na, 
                               false = paynu_dv_na))
+
+# TODO fimnlabgrs_dv 
