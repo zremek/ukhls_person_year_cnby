@@ -3,6 +3,12 @@ library(haven)
 library(sjmisc)
 library(sjlabelled)
 
+# DIGCLASS package is not on CRAN
+# install.packages("devtools")
+# devtools::install_git("https://code.europa.eu/digclass/digclass.git")
+
+library(DIGCLASS)
+
 # age filter #### 
 
 # find birth year inconsistencies
@@ -15,7 +21,7 @@ birthy_consistent_id <- longfile %>%
 
 longfile <- longfile %>% 
   filter(pidp %in% birthy_consistent_id) %>% # filter off inconsistent
-  filter(between(x = doby_dv, left = 1983, right = 1998)) # only born from 83 to 98
+  filter(between(x = doby_dv, left = 1983, right = 2003)) # only born from 83 to 03
 
 
 
@@ -68,13 +74,15 @@ longfile <-
          seearnnet_dv_na = sjlabelled::set_na(seearnnet_dv, na = -9:-1,
                                               drop.levels = TRUE), 
          paynu_dv_na = sjlabelled::set_na(paynu_dv, na = -9:-1,
-                                          drop.levels = TRUE))
+                                          drop.levels = TRUE), 
+         fimnlabgrs_dv_na = sjlabelled::set_na(fimnlabgrs_dv, na = -9:-1,
+                                               drop.levels = TRUE))
 
 # labelled::drop_unused_value_labels for all variables
 
 longfile <- longfile %>% labelled::drop_unused_value_labels()
 
-# create 
+# create income vars
 
 longfile <- longfile %>% 
     mutate(JOB01_IncomeGrs = if_else(!is.na(seearngrs_dv_na), 
@@ -82,6 +90,26 @@ longfile <- longfile %>%
                               false = paygu_dv_na),
            JOB01_IncomeNet = if_else(!is.na(seearnnet_dv_na), 
                               true = seearnnet_dv_na, 
-                              false = paynu_dv_na))
+                              false = paynu_dv_na), 
+           Y_Workincome = fimnlabgrs_dv, 
+           CY_Workincome = NA, 
+           JOB01_IncomeGrs_CV = paygu_if == 1 | seearngrs_if == 1,
+           JOB01_IncomeNet_CV = paynu_if == 1
+           )
 
-# TODO fimnlabgrs_dv 
+# recode isco88 to 08 #### 
+
+longfile <- longfile %>% 
+  mutate(
+    jbisco88_cc_na = sjlabelled::set_na(jbisco88_cc, na = -9:-1,
+                                        drop.levels = TRUE) %>% 
+      as.character(),
+    jbisco88_cc_na_4 = paste0(jbisco88_cc_na, "0"),
+    jbisco88_cc_na_4 = sjlabelled::set_na(jbisco88_cc_na_4, na = "NA0"),
+    jbisco88_cc_na_4 = if_else(nchar(jbisco88_cc_na_4) == 3, 
+                               paste0(jbisco88_cc_na_4, "0"), 
+                               jbisco88_cc_na_4),
+    JOB01_ISCO08 = isco88_to_isco08(jbisco88_cc_na_4)
+  )
+
+
