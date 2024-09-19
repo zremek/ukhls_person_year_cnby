@@ -25,12 +25,6 @@ longfile <- longfile %>%
 
 
 
-
-# TODO FSTWAVE First wave R participated - survey year #### 
-# waiting for help https://iserredex.essex.ac.uk/support/issues/2144  
-
-
-
 # dates of next and previous interview #### 
 # Nxtwave_Yr Date of first interview after this year: year
 # Nxtwave_Mth Date of first interview after this year: month
@@ -111,5 +105,70 @@ longfile <- longfile %>%
                                jbisco88_cc_na_4),
     JOB01_ISCO08 = isco88_to_isco08(jbisco88_cc_na_4)
   )
+
+# TODO FSTWAVE First wave R participated - survey year #### 
+# FSTWAVE
+# LSTWAVE
+# CURWAVE
+# Curwave_Yr
+# Curwave_Mth
+# Curwave_Day
+# NXTWAVE
+# PREVWAVE
+
+longfile <- longfile %>% 
+  arrange(pidp, wave) %>% 
+  mutate(
+    YEAR = intdaty_dv, 
+    CURWAVE = wave,
+    Curwave_Yr = intdaty_dv, 
+    Curwave_Mth = intdatm_dv,
+    Curwave_Day = intdatd_dv, 
+    NXTWAVE = lead(wave), 
+    PREVWAVE = lag(wave), 
+    STUDY = study
+  )
+
+
+longfile <- longfile %>%
+  group_by(pidp) %>%
+  mutate(FSTWAVE = min(CURWAVE),
+         LSTWAVE = max(CURWAVE)) %>%
+  ungroup()
+
+# TODO 
+
+# doby_dv
+# YRBIRTH
+# Year of birth
+
+# NA: Special Licence
+# MTBIRTH
+# Month of birth
+
+# NA: Special Licence
+# DYBIRTH
+# Day of birth
+
+# sex_dv
+# GENDER
+# Gender
+
+# urban_dv
+# RESIDSIZEa
+# Urban / rural
+
+# gor_dv+country
+# RESIDREGa
+# Region of residence
+
+# marstat_dv+mastat_dv
+# MARITSTATa
+# Marital / partnership status
+
+# nchild_dv+ndepchl_dv
+# CHILDRENa
+# Number of children
+
 
 

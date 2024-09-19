@@ -200,4 +200,4 @@ qplot(as.factor(wave), data = longfile)
 # # # rm(wave_data, variables_to_select, wave_letter, wave_number)
 # # # 
 
-# save.image("longfile_1109.RData")
+save.image("longfile_1909.RData")
