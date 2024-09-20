@@ -4,4 +4,6 @@
 *.Rmd
 *.dta
 *.sav
+*.pdf
+*.html
 .Ruserdata

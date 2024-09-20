@@ -9,6 +9,10 @@ library(sjlabelled)
 
 library(DIGCLASS)
 
+# if you manually run script by script,
+# you saved data from 01-load.R and restarted R session, now run:
+# load("longfile.RData") 
+
 # age filter #### 
 
 # find birth year inconsistencies
@@ -21,18 +25,11 @@ birthy_consistent_id <- longfile %>%
 
 longfile <- longfile %>% 
   filter(pidp %in% birthy_consistent_id) %>% # filter off inconsistent
-  filter(between(x = doby_dv, left = 1983, right = 2003)) # only born from 83 to 03
+  filter(between(x = doby_dv, lower = 1983, upper = 2003)) # only born from 83 to 03
 
 
 
 # dates of next and previous interview #### 
-# Nxtwave_Yr Date of first interview after this year: year
-# Nxtwave_Mth Date of first interview after this year: month
-# Nxtwave_Day Date of first interview after this year: day
-
-# Prevwave_Yr Date of last interview after this year: year
-# Prevwave_Mth Date of last interview after this year: month
-# Prevwave_Day Date of last interview after this year: day
 
 longfile <- 
   longfile %>% 
@@ -43,18 +40,6 @@ longfile <-
          Nxtwave_Yr = lead(intdaty_dv), 
          Nxtwave_Mth = lead(intdatm_dv), 
          Nxtwave_Day = lead(intdatd_dv))
-
-
-# gross usual pay paygu_dv, self-employment pay seearngrs_dv
-# JOB01_IncomeGrs
-# [Job 01] Monthly earnings, gross
-# at the end of the spell (current earnings for censored spells); in UKHLS for current job at the time of interview
-# paynu_dv, seearnnet_dv
-# JOB01_IncomeNet
-# [Job 01] Monthly earnings, net
-
-
-
 
 
 # clean income data from special missing categories from -9 to -1 #### 
@@ -106,15 +91,7 @@ longfile <- longfile %>%
     JOB01_ISCO08 = isco88_to_isco08(jbisco88_cc_na_4)
   )
 
-# TODO FSTWAVE First wave R participated - survey year #### 
-# FSTWAVE
-# LSTWAVE
-# CURWAVE
-# Curwave_Yr
-# Curwave_Mth
-# Curwave_Day
-# NXTWAVE
-# PREVWAVE
+# First / last wave R participated - survey year #### 
 
 longfile <- longfile %>% 
   arrange(pidp, wave) %>% 
@@ -136,27 +113,7 @@ longfile <- longfile %>%
          LSTWAVE = max(CURWAVE)) %>%
   ungroup()
 
-# TODO 
-
-# doby_dv
-# YRBIRTH
-# Year of birth
-
-# NA: Special Licence
-# MTBIRTH
-# Month of birth
-
-# NA: Special Licence
-# DYBIRTH
-# Day of birth
-
-# sex_dv
-# GENDER
-# Gender
-
-# urban_dv
-# RESIDSIZEa
-# Urban / rural
+# demographics #### 
 
 longfile <- longfile %>%
   mutate(
@@ -212,3 +169,10 @@ ukhls_CNBformat <-
     CY_Workincome = '[Derived income] Total income from work',
     STUDY = 'Name of the panel study'
   )
+
+# set id as character #### 
+
+ukhls_CNBformat$Respid <- as.character(ukhls_CNBformat$Respid)
+
+# if you want to save this step run:
+# save.image("ukhls_CNBformat.RData") 
