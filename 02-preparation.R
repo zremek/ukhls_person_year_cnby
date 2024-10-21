@@ -25,7 +25,9 @@ birthy_consistent_id <- longfile %>%
 
 longfile <- longfile %>% 
   filter(pidp %in% birthy_consistent_id) %>% # filter off inconsistent
-  filter(between(x = doby_dv, lower = 1983, upper = 2003)) # only born from 83 to 03
+  filter(between(x = doby_dv,
+                 left = 1983,
+                 right = 2003)) # only born from 83 to 03
 
 
 
@@ -173,6 +175,9 @@ ukhls_CNBformat <-
 # set id as character #### 
 
 ukhls_CNBformat$Respid <- as.character(ukhls_CNBformat$Respid)
+
+print(paste(Sys.time(), "[02 done]"))
+
 
 # if you want to save this step run:
 # save.image("ukhls_CNBformat.RData") 

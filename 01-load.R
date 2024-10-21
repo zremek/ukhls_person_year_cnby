@@ -11,7 +11,6 @@ library(sjmisc)
 
 
 # select variables ####
-# pidp goes into read_spss() because it has no wave prefix
 
 ukhls_variables_to_select <- c(
   "age_dv",
@@ -52,7 +51,7 @@ longfile <- haven::read_spss(file = paste0(my_path, "a_indresp.sav")) %>%
 # read all waves up to 13 in a loop
 for (wave_number in 2:13) {
   wave_letter <- paste0(letters[wave_number],"_")
-  wave_data <- read_spss(paste0(my_path,
+  wave_data <- haven::read_spss(paste0(my_path,
                                 "/",
                                 wave_letter,
                                 "indresp.sav")) %>%
@@ -69,7 +68,18 @@ for (wave_number in 2:13) {
 # all UKHLS waves are now binded into longfile data object
 
 # remove unneeded objects 
-rm(wave_data, ukhls_variables_to_select, wave_letter, wave_number)
+rm(
+  packages,
+  not_on_cran,
+  package_check,
+  wave_data,
+  ukhls_variables_to_select,
+  wave_letter,
+  wave_number
+)
+
+print(paste(Sys.time(), "[01 done]"))
+
 
 # if you want to save this step run:
 # save.image("longfile.RData")

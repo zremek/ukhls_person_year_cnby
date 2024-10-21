@@ -5,3 +5,5 @@ library(haven)
 # load("ukhls_CNBformat.RData") 
 
 haven::write_sav(data = ukhls_CNBformat, path = "ukhls_CNBformat.sav")
+
+print(paste(Sys.time(), "[03 done and data saved]"))
