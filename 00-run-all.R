@@ -1,5 +1,5 @@
-# This script runs all other scripts to produce ukhls_CNBformat.sav file
-# in your working directory. 
+# This script runs all other scripts to produce ukhls_CNBformat.sav and .dta
+# files in your working directory. 
 
 ##### setup start #### 
 
@@ -25,10 +25,6 @@
 # change path to ".../UKDA-6614-stata/stata/stata13_se/ukhls/"
 # and use haven::read_stata() instead of haven::read_spss()
 
-my_path_old <-
-  "/Users/remek/Code/ukhls-bhps-career-outline-working-paper/UKDA-6614-spss/spss/spss25/" # 1-10
-my_path_new <-
-  "/Users/remek/Code/UKDA-6614-spss/spss/spss25/ukhls/"    # 1-13
 
 # Check and print the paths with error messages
 if (!is.null(my_path_old) && !is.null(my_path_new)) {
@@ -54,7 +50,7 @@ if (!is.null(my_path_old) && !is.null(my_path_new)) {
 # the procedures needed to generate the harmonized cnb-y dataset. do
 # not use the w_max variable as a filter at an early stage.
 
-w_max <- 13
+# w_max <- 'my_max_wave_in_the_data_release_i_use'
 
 ##### setup end ####
 

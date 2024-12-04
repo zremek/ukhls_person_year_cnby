@@ -98,7 +98,7 @@ longfile <- longfile %>%
 longfile <- longfile %>% 
   arrange(pidp, wave) %>% 
   mutate(
-    YEAR = intdaty_dv, 
+    YEAR = first(intdaty_dv) + wave - first(wave), 
     CURWAVE = wave,
     Curwave_Yr = intdaty_dv, 
     Curwave_Mth = intdatm_dv,
@@ -107,6 +107,16 @@ longfile <- longfile %>%
     PREVWAVE = lag(wave), 
     STUDY = study
   )
+
+# note on YEAR (line 101):
+# for each person, start with the year of their first interview
+# calculate how many interview waves have occurred since that first interview
+# adjust the first interview year by adding the number of waves that have passed
+# this results in a corrected interview year that accounts for the wave number
+# this process ensures the interview year is consistently adjusted based on the wave
+# making it easier to compare interview years across different waves for each person.
+# with intdaty_dv you can see that over 3K respondents were interviewed twice
+# during one calendar year 
 
 
 longfile <- longfile %>%
