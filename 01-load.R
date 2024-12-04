@@ -5,6 +5,8 @@ library(sjmisc)
 # if you manually run script by script,
 # and have not set your path to data folder
 # in script 00-run-all.R
+
+
 # do it in the line below, un-comment and run:
 
 # my_path <- "/a_directory_on_my_machine/UKDA-6614-spss/spss/spss25/ukhls/"
@@ -67,7 +69,7 @@ for (wave_number in 2:13) {
 
 # all UKHLS waves are now binded into longfile data object
 
-# remove unneeded objects 
+# remove unneeded objects #### 
 rm(
   packages,
   not_on_cran,
