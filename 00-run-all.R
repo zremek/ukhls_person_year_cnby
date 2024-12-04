@@ -1,29 +1,70 @@
 # This script runs all other scripts to produce ukhls_CNBformat.sav file
 # in your working directory. 
 
-# This version requires UKHLS data from UKDA-6614-spss repository,
-# waves from 1 to 13.
+##### setup start #### 
 
-# Provide the path to the folder containing UKHLS data. #### 
-# For current version of the data release it looks like that:
+# please note which data release version you want to use, as the directory
+# structure and file paths differ between older and newer versions.
+# until wave 1-11 release (10.5255/UKDA-SN-6614-17)
+# data files were structured in wave specific sub-folders.
+# from wave 1-12 release (10.5255/UKDA-SN-6614-18)
+# data files are organised in study specific sub-folders.
+#
+# you need to manually set the path variable!
+#
+## for older versions, use:
+# my_path_old <- "/a_directory_on_my_machine/UKDA-6614-spss/spss/spss24/"
+#
+# if you downloaded stata version,
+# change path to ".../UKDA-6614-stata/stata/stata11_se/"
+#
+## for newer versions, use:
+# my_path_new <- "/a_directory_on_my_machine/UKDA-6614-spss/spss/spss25/ukhls/"
+#
+# if you downloaded stata version,
+# change path to ".../UKDA-6614-stata/stata/stata13_se/ukhls/"
+# and use haven::read_stata() instead of haven::read_spss()
 
-# /a_directory_on_my_machine/UKDA-6614-spss/spss/spss25/ukhls/
+my_path_old <-
+  "/Users/remek/Code/ukhls-bhps-career-outline-working-paper/UKDA-6614-spss/spss/spss25/" # 1-10
+my_path_new <-
+  "/Users/remek/Code/UKDA-6614-spss/spss/spss25/ukhls/"    # 1-13
 
-# set it in the line below, and un-comment it: 
-
-# my_path <- "/a_directory_on_my_machine/UKDA-6614-spss/spss/spss25/ukhls/"
-
-print(my_path) # if error, you have not set the directory above. 
+# Check and print the paths with error messages
+if (!is.null(my_path_old) && !is.null(my_path_new)) {
+  cat("Please provide only one path.\n")
+} else if (is.null(my_path_old) && is.null(my_path_new)) {
+  cat("You have not set the path.\n")
+} else if (!is.null(my_path_old)) {
+  cat("Your path to data is:", my_path_old, "\n")
+} else if (!is.null(my_path_new)) {
+  cat("Your path to data is:", my_path_new, "\n")
+}
 
 # Please supplement the first part '/a_directory_on_my_machine/'
 # with an actual path to the folder. 
 # There is no need to change the former part of the path. 
 
+# additionally, you need to specify the maximum wave number included
+# in the data release you are using. if you are using a data release
+# that includes waves 1-11, enter the number 11 and assign it to the
+# variable w_max. if you are using a data release that includes waves
+# 1-13, enter the number 13. if you are not interested in certain waves
+# included in the data release, filter them out after completing all
+# the procedures needed to generate the harmonized cnb-y dataset. do
+# not use the w_max variable as a filter at an early stage.
+
+w_max <- 13
+
+##### setup end ####
+
 # If you provided the path to the folder containing UKHLS data
-# in line 14 above and do not want to run scripts manually, 
+# and do not want to run scripts manually, 
 # you may skip the rest of the reading and source this script. 
 
 ##
+
+print(paste(Sys.time(), "[00 start]"))
 
 # This script requires a couple of packages to run. 
 # You can manually install them or otherwise run the commands: 
